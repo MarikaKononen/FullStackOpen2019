@@ -2,6 +2,22 @@ import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 import './index.css';
 
+const Statistics = (props) => {
+  return(
+    <div>
+        <h1>Statistiikka</h1>     
+        <div className="results">
+          <p>Hyvä {props.good}</p>
+          <p>Neutraali {props.neutral}</p>
+          <p>Huono {props.bad}</p>
+        </div>
+        <p>Yhteensä { props.total }</p>
+        <p>Keskiarvo {props.KA}</p>
+        <p>Postiivista {props.positiveFB} %</p>
+    </div>
+  )
+}
+
 const App = () => {
   // tallenna napit omaan tilaansa
   const [good, setGood] = useState(0)
@@ -39,15 +55,14 @@ const App = () => {
       <button onClick={() => setToNeutral(neutral + 1)}>Neutraali</button>
       <button onClick={() => setToBad(bad + 1)}>Huono</button>    
 
-      <h1>Statistiikka</h1> 
-      <div className="results">
-        <p>Hyvä {good}</p>
-        <p>Neutraali {neutral}</p>
-        <p>Huono {bad}</p>
-      </div>
-      <p>Yhteensä { total }</p>
-      <p>Keskiarvo {calculateKA()}</p>
-      <p>Postiivista {calculatePositiveFeedbacks()} %</p>
+      <Statistics good={good}
+                  neutral={neutral}
+                  bad={bad}
+                  total={total}
+                  KA={calculateKA()}
+                  positiveFB={calculatePositiveFeedbacks()} 
+      />       
+      
     </div>
   )
 }
