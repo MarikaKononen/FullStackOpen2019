@@ -45,7 +45,7 @@ button{
   font-size: 1rem;
  }
 
- .results{
+ table{
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
@@ -53,8 +53,4 @@ button{
   align-items:center;
   border:1px solid purple;
   background-color: thistle;
- }
- .results p{
-   padding: 0 20px;
-   color:  purple;   
  }
