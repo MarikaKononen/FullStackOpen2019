@@ -3,20 +3,30 @@ import ReactDOM from 'react-dom'
 import './index.css';
 
 const Statistics = (props) => {
-  return(
+        
+  if (props.good === 0 && props.neutral === 0 && props.bad === 0 ) { 
+    return(
+      <div>
+        <h1>Statistics</h1>  
+        <p>No feedback given!</p>
+      </div>
+    )
+  } 
+  return (
     <div>
-        <h1>Statistiikka</h1>     
-        <div className="results">
-          <p>Hyvä {props.good}</p>
-          <p>Neutraali {props.neutral}</p>
-          <p>Huono {props.bad}</p>
-        </div>
-        <p>Yhteensä { props.total }</p>
-        <p>Keskiarvo {props.KA}</p>
-        <p>Postiivista {props.positiveFB} %</p>
+      <h1>Statistics</h1>  
+      <div className="results">
+        <p>Good {props.good}</p>
+        <p>Neutral {props.neutral}</p>
+         <p>Bad {props.bad}</p>
+      </div>
+      <p>Total { props.total }</p>
+      <p>Average {props.average}</p>
+      <p>Positive {props.positiveFB} %</p>
     </div>
   )
 }
+
 
 const App = () => {
   // tallenna napit omaan tilaansa
@@ -38,7 +48,7 @@ const App = () => {
     setBad(newValue)
   }
 
-  const calculateKA = () => {
+  const calculateAverage = () => {
     let sum  = ( good * 1 ) + ( neutral * 0 ) + ( bad * -1 )  
     return sum/total
   }
@@ -50,16 +60,16 @@ const App = () => {
 
   return (
     <div className="content">
-      <h1>Anna palautetta</h1>
-      <button onClick={() => setToGood(good + 1)}>Hyvä</button>
-      <button onClick={() => setToNeutral(neutral + 1)}>Neutraali</button>
-      <button onClick={() => setToBad(bad + 1)}>Huono</button>    
+      <h1>Give Feedback</h1>
+      <button onClick={() => setToGood(good + 1)}>Good</button>
+      <button onClick={() => setToNeutral(neutral + 1)}>Neutral</button>
+      <button onClick={() => setToBad(bad + 1)}>Bad</button>    
 
       <Statistics good={good}
                   neutral={neutral}
                   bad={bad}
                   total={total}
-                  KA={calculateKA()}
+                  average={calculateAverage()}
                   positiveFB={calculatePositiveFeedbacks()} 
       />       
       
