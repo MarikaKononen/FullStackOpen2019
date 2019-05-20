@@ -3,8 +3,8 @@ This repository contains exercises of Full Stack Open 2019 course.
 It's free and can be found from: https://fullstackopen.com/#course-contents
 
 Content of course:   
-part0 : Basics of web applications   
-part1 : Basics of React   
+part0 : Basics of web applications => done      
+part1 : Basics of React => ongoing      
 part2 : Communication with server   
 part3 : Programming of server by using Node.js - Express library   
 part4 : Testing Express application, user management   
