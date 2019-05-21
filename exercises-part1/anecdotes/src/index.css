@@ -1,0 +1,51 @@
+body {
+  margin: 0;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.content{
+  margin: 20px auto;
+  width: 40%;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+button{
+  border: 1px solid rebeccapurple;
+  border-radius: 15px;
+  margin: 10px 20px;
+  padding:  5px 15px;
+  color: white;
+  font-size: 0.9rem;
+  background: black;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+.btns{
+  margin: 20px auto;
+  width: 50%;
+  text-align: center;
+}
+
+p{
+  text-align: center;
+}
+
+h1{
+  margin: 10px auto;
+  text-align: center;
+  color:  rebeccapurple;
+  border: 1px solid rebeccapurple;
+  background-color: lavenderblush;
+  border-radius: 15px;
+
+}
+
+.anecdote{
+  font-size: 1.5rem;
+  font-style: italic;
+}
+
+
