@@ -12,12 +12,9 @@ const Content = ({content}) => {
     )
     const calculateTotal= () => {
       const totalExercises = content.map(part => part.exercises)
-      let sum = 0;
-      for( let i=0; i < totalExercises.length; i++){
-        sum = sum + totalExercises[i]
-        console.log(sum)
-      }
-      return sum  
+      const total = 
+      totalExercises.reduce( (s, p) => s + p )
+      return total  
     }  
   
     return (
