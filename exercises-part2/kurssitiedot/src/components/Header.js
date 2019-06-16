@@ -4,7 +4,7 @@ const Header = ({name}) => {
   console.log('Header name', name)
     return (
       <>
-        <h1>{name}</h1>
+        <h2>{name}</h2>
         {console.log('header')}
       </>
     )
