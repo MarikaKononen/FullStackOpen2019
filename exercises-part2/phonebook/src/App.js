@@ -1,8 +1,10 @@
 import './App.css';
 import React, { useState } from 'react'
-import Person from './components/Person'
+import Persons from './components/Persons'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
 
-const initialState = [
+let phonebook = [
     { name: 'Arto Hellas', number: '040-123456' },
     { name: 'Ada Lovelace', number: '39-44-5323523' },
     { name: 'Dan Abramov', number: '12-43-234345' },
@@ -11,18 +13,10 @@ const initialState = [
 
 
 const App = () => {
-  const [ persons, setPersons] = useState(initialState) 
+  const [ persons, setPersons] = useState(phonebook) 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setNewFilter ] = useState('')
-
-  const rows = () => persons.map(person =>
-    <Person
-      key={person.name}
-      name={person.name}
-      number={person.number}
-    />
-  )
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -32,14 +26,16 @@ const App = () => {
     if ( isInArray.length === 0 ) {
       
       console.log('button clicked', event.target)
-      const nameObject = {
+      const personObject = {
         name: newName,
         number: newNumber
       }
       
-      setPersons(persons.concat(nameObject))
+      setPersons(persons.concat(personObject))
+      phonebook.push(personObject)
       setNewName('')
       setNewNumber('')
+
 
     } else {
       window.alert(`${newName} is already added to phonebook`)
@@ -62,48 +58,50 @@ const App = () => {
   const handleFilterChange = (event) => {
     setNewFilter(event.target.value)
     console.log(event.target.value)
+
     if ( event.target.value === '' ){
-      console.log("setPersons(initialState)")
-      setPersons(initialState)
+      setPersons(phonebook)
     } else {
       let filteredArray = filterNames( persons, event.target.value)
-      console.log('debug:: filteredArray', filteredArray)
+      console.log('debug filtered', filteredArray)
       setPersons(filteredArray)
     }
+   
   }
+  const handleOnKeyUp = (event) => {
+    console.log("press button", event.key)
+    
+    if ( event.key === 'Backspace'){
+      let filteredArray = filterNames( phonebook, event.target.value)
+      console.log('debug onkeyup', filteredArray)
+      setPersons(filteredArray)
+    } 
+  }
+
 
   const filterNames = (array, letter) => {
     return array.filter(person => person.name.toLowerCase().startsWith(letter.toLowerCase()) === true )
   }
-  
+
+
   return (
     <div>
       <h2>Phonebook</h2>
-        <div>
-          filter shown with: <input value={newFilter}
-                                    onChange={handleFilterChange}
-                              />
-        </div>
-      <h2>Add a new</h2>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input value={newName}
-                       onChange={handleNameChange}
-                />
-        </div>
-        <div>
-          number: <input value={newNumber}
-                         onChange={handleNumberChange}
-                />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      <div>
-        {rows()}
-      </div>
+      <Filter value={newFilter}
+              onChange={handleFilterChange}
+              onKeyUp={handleOnKeyUp}
+      />
+
+      <h3>Add a new</h3>
+      <PersonForm onSubmit={addPerson}
+                  valueName={newName}
+                  onChangeName={handleNameChange}
+                  valueNumber={newNumber}
+                  onChangeNumber={handleNumberChange}
+
+      />
+      <h3>Numbers</h3>
+      <Persons allPersons = {persons} />
     </div>
   )
 
