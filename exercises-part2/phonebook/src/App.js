@@ -1,23 +1,41 @@
 import './App.css';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 
-let phonebook = [
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ]
-
 
 const App = () => {
-  const [ persons, setPersons] = useState(phonebook) 
+  const [ persons, setPersons] = useState([]) 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setNewFilter ] = useState('')
 
+
+  const hook = () => {
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('promise fulfilled')
+        setPersons(response.data)
+        console.log('debug: data', response.data)
+      })
+  }
+  
+  useEffect(hook, [])
+  
+  const showPersons = () => {
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('promise fulfilled')
+        setPersons(response.data)
+        console.log('debug: data', response.data)
+      })
+  }
   const addPerson = (event) => {
     event.preventDefault()
     const isInArray = persons.filter(person => person.name === newName);
@@ -32,7 +50,6 @@ const App = () => {
       }
       
       setPersons(persons.concat(personObject))
-      phonebook.push(personObject)
       setNewName('')
       setNewNumber('')
 
@@ -60,7 +77,7 @@ const App = () => {
     console.log(event.target.value)
 
     if ( event.target.value === '' ){
-      setPersons(phonebook)
+      showPersons()
     } else {
       let filteredArray = filterNames( persons, event.target.value)
       console.log('debug filtered', filteredArray)
@@ -72,7 +89,7 @@ const App = () => {
     console.log("press button", event.key)
     
     if ( event.key === 'Backspace'){
-      let filteredArray = filterNames( phonebook, event.target.value)
+      let filteredArray = filterNames( persons, event.target.value)
       console.log('debug onkeyup', filteredArray)
       setPersons(filteredArray)
     } 
