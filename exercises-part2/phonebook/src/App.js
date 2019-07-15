@@ -5,6 +5,7 @@ import Persons from './components/Persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 
+let phonebookTmp = []
 
 const App = () => {
   const [ persons, setPersons] = useState([]) 
@@ -20,6 +21,7 @@ const App = () => {
       .then(response => {
         console.log('promise fulfilled')
         setPersons(response.data)
+        phonebookTmp = response.data
         console.log('debug: data', response.data)
       })
   }
@@ -36,6 +38,7 @@ const App = () => {
         console.log('debug: data', response.data)
       })
   }
+
   const addPerson = (event) => {
     event.preventDefault()
     const isInArray = persons.filter(person => person.name === newName);
@@ -52,7 +55,8 @@ const App = () => {
       setPersons(persons.concat(personObject))
       setNewName('')
       setNewNumber('')
-
+      phonebookTmp.push(personObject)
+      console.log('debug phonebooktmp', phonebookTmp)
 
     } else {
       window.alert(`${newName} is already added to phonebook`)
@@ -79,7 +83,7 @@ const App = () => {
     if ( event.target.value === '' ){
       showPersons()
     } else {
-      let filteredArray = filterNames( persons, event.target.value)
+      let filteredArray = filterNames( phonebookTmp, event.target.value)
       console.log('debug filtered', filteredArray)
       setPersons(filteredArray)
     }
@@ -88,11 +92,11 @@ const App = () => {
   const handleOnKeyUp = (event) => {
     console.log("press button", event.key)
     
-    if ( event.key === 'Backspace'){
-      let filteredArray = filterNames( persons, event.target.value)
+   if ( event.key === 'Backspace'){
+      let filteredArray = filterNames( phonebookTmp, event.target.value)
       console.log('debug onkeyup', filteredArray)
       setPersons(filteredArray)
-    } 
+    }  
   }
 
 
