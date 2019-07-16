@@ -24,6 +24,7 @@ const Countries = (props) => {
     return (
       <div>
         {props.allCountries.length > 1 &&
+            
             <ul>
                 {rows()}
             </ul>

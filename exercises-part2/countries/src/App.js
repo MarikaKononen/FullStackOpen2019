@@ -57,14 +57,13 @@ const App = () => {
 
   return (
     <div>
-      <h2>Find Country</h2>
+      <h2>Find Countries</h2>
       <Filter value={newFilter}
               onChange={handleFilterChange}
               
       />
-
-      <h4>List of Countries</h4>
-      {filteredCountries.length < 11 &&
+  
+      {filteredCountries.length < 11 &&          
           <Countries allCountries = {filteredCountries} />
       }
       {filteredCountries.length > 10 &&
