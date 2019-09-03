@@ -1,6 +1,6 @@
 import './App.css';
+import personService from './services/persons'
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
@@ -16,29 +16,25 @@ const App = () => {
 
   const hook = () => {
     console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
-        phonebookTmp = response.data
-        console.log('debug: data', response.data)
+    personService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
+        phonebookTmp = initialPersons
       })
   }
   
   useEffect(hook, [])
   
+  // show persons - getAll
   const showPersons = () => {
     console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
-        console.log('debug: data', response.data)
-      })
+    personService
+      .getAll()
+      .then(persons => setPersons(persons))
   }
 
+// add person - create 
   const addPerson = (event) => {
     event.preventDefault()
     const isInArray = persons.filter(person => person.name === newName);
@@ -51,12 +47,15 @@ const App = () => {
         name: newName,
         number: newNumber
       }
-      
-      setPersons(persons.concat(personObject))
-      setNewName('')
-      setNewNumber('')
-      phonebookTmp.push(personObject)
-      console.log('debug phonebooktmp', phonebookTmp)
+      personService
+        .create(personObject)
+        .then(returnedPerson =>{
+          setPersons(persons.concat(returnedPerson))
+          setNewName('')
+          setNewNumber('')
+          phonebookTmp.push(returnedPerson)
+          console.log('debug phonebooktmp', phonebookTmp)
+        })
 
     } else {
       window.alert(`${newName} is already added to phonebook`)
