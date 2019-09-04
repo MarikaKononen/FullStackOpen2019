@@ -65,6 +65,33 @@ const App = () => {
      
   }
 
+  const removePerson = event => {
+    console.log("in removePersons")
+    const id = parseInt(event.target.value)
+    const person = persons.find(p => p.id === id)
+    console.log("remove id", id, "removed: ", person.name)
+    if (window.confirm(`Do you really want to delete '${person.name}'?`)) { 
+      personService
+        .remove(id)
+        .then(res =>{
+          console.log("returnedPersons", res)
+          const newPersonsArray = persons.filter(p => p.id !== id)
+          setPersons(newPersonsArray)
+          phonebookTmp = newPersonsArray
+          console.log("phonebook tmp", phonebookTmp)
+          console.log("persons", persons)          
+
+        })
+        .catch(error => {
+          alert(
+            `the person '${person.name}' cannot be deleted from the server! ERRORR:: ${error}`
+          )
+        })
+
+      } 
+  }
+ 
+
   const handleNameChange = (event) => {
     console.log(event.target.value)
     setNewName(event.target.value)
@@ -121,7 +148,7 @@ const App = () => {
 
       />
       <h3>Numbers</h3>
-      <Persons allPersons = {persons} />
+      <Persons allPersons = {persons} onClick={removePerson} />
     </div>
   )
 

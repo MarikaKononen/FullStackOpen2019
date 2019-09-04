@@ -1,11 +1,6 @@
 {
   "persons": [
     {
-      "name": "Arto Hellas",
-      "number": "040-123456",
-      "id": 1
-    },
-    {
       "name": "Ada Lovelace",
       "number": "39-44-5323523",
       "id": 2
@@ -26,19 +21,9 @@
       "id": 5
     },
     {
-      "name": "Liisa-Maija",
-      "number": "0000000",
+      "name": "Aava",
+      "number": "34456",
       "id": 6
-    },
-    {
-      "name": "Maatu",
-      "number": "12345677",
-      "id": 7
-    },
-    {
-      "name": "Calle",
-      "number": "45667",
-      "id": 8
     }
   ]
 }
