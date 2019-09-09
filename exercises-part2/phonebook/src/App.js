@@ -1,9 +1,11 @@
-import './App.css';
 import personService from './services/persons'
 import React, { useState, useEffect } from 'react'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
+import Notification from './components/Notification'
+import Footer from './components/Footer'
+import Header from './components/Header'
 
 let phonebookTmp = []
 
@@ -12,6 +14,8 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setNewFilter ] = useState('')
+  const [ notificationMessage, setNotificationMessage] = useState(null)
+  const [ notificationType, setNotificationType] = useState('')
 
 
   const hook = () => {
@@ -34,7 +38,7 @@ const App = () => {
       .then(persons => setPersons(persons))
   }
 
-// add person - create  and update person
+// add person - CREATE and UPDATE person
   const addPerson = event => {
     event.preventDefault()
     const isInArray = persons.filter(person => person.name === newName);
@@ -57,7 +61,9 @@ const App = () => {
           setNewNumber('')
           phonebookTmp.push(returnedPerson)
           console.log('debug phonebooktmp', phonebookTmp)
+          setUserNotifications('success', `Added ${personObject.name} to the phonebook`, null)
         })
+
 
     } else if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)){
       const id = isInArray[0].id
@@ -67,22 +73,33 @@ const App = () => {
         .update(id, personObject)
         .then(response => {
           setPersons(persons.map(person => person.id !== id ? person : response.data))
+          setUserNotifications('success',`Updated ${personObject.name} to the phonebook`, null)
+          setNewName('')
+          setNewNumber('')
         })
-      setNewName('')
-      setNewNumber('')
+        .catch(error => {
+          setUserNotifications(
+            'error',
+            `Updating of ${personObject.name} caused an error: '${error.message}'`, 
+             null
+          )
+          setNewName('')
+          setNewNumber('')
+        })
+      
     } else {
-
       setNewName('')
       setNewNumber('')
     }
      
   }
-
+  // REMOVE person
   const removePerson = event => {
     console.log("in removePersons")
     const id = parseInt(event.target.value)
     const person = persons.find(p => p.id === id)
     console.log("remove id", id, "removed: ", person.name)
+
     if (window.confirm(`Do you really want to delete '${person.name}'?`)) { 
       personService
         .remove(id)
@@ -93,18 +110,21 @@ const App = () => {
           phonebookTmp = newPersonsArray
           console.log("phonebook tmp", phonebookTmp)
           console.log("persons", persons)          
-
+          setUserNotifications('success',`Removed ${person.name} from the phonebook`, null)
         })
         .catch(error => {
-          alert(
-            `the person '${person.name}' cannot be deleted from the server! ERRORR:: ${error}`
+          setUserNotifications(
+            'error', 
+            `the person '${person.name}' cannot be deleted from the server! ERROR:: ${error}`, 
+            null
           )
+
         })
 
       } 
   }
  
-
+  // event handlers
   const handleNameChange = (event) => {
     console.log(event.target.value)
     setNewName(event.target.value)
@@ -138,31 +158,50 @@ const App = () => {
     }  
   }
 
-
+  // helper functions
   const filterNames = (array, letter) => {
     return array.filter(person => person.name.toLowerCase().startsWith(letter.toLowerCase()) === true )
   }
 
+  const setUserNotifications = (type, message, id) => {
+    setNotificationType(type)
+    setNotificationMessage(message)
+    setTimeout(()=> {
+      setNotificationMessage(null)
+    }, 4000)
+    if( type === 'error' && id != null){
+      const newPersonsArr = persons.filter (p => p.id !== id)
+      setPersons(newPersonsArr)
+      phonebookTmp = newPersonsArr
+    }
+  }
+
+ 
 
   return (
     <div>
-      <h2>Phonebook</h2>
-      <Filter value={newFilter}
-              onChange={handleFilterChange}
-              onKeyUp={handleOnKeyUp}
-      />
+      <Header />
+      <div className="container">
+        <h2>Phonebook</h2>
 
-      <h3>Add a new or update existing one</h3>
-      <PersonForm onSubmit={addPerson}
-                  valueName={newName}
-                  onChangeName={handleNameChange}
-                  valueNumber={newNumber}
-                  onChangeNumber={handleNumberChange}
+        <Notification type={notificationType} message = {notificationMessage} />
 
+        <Filter value={newFilter}
+                onChange={handleFilterChange}
+                onKeyUp={handleOnKeyUp}
+        />
 
-      />
-      <h3>Numbers</h3>
-      <Persons allPersons = {persons} onClick={removePerson} />
+        <h3>Add a new or update existing one</h3>
+        <PersonForm onSubmit={addPerson}
+                    valueName={newName}
+                    onChangeName={handleNameChange}
+                    valueNumber={newNumber}
+                    onChangeNumber={handleNumberChange}
+        />
+        <h3>Numbers</h3>
+        <Persons allPersons = {persons} onClick={removePerson} />
+      </div>
+      <Footer />
     </div>
   )
 

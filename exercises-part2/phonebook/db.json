@@ -16,11 +16,6 @@
       "id": 4
     },
     {
-      "name": "Aava",
-      "number": "1589621",
-      "id": 6
-    },
-    {
       "name": "Marika Könönen",
       "number": "333333333",
       "id": 8
@@ -32,8 +27,28 @@
     },
     {
       "name": "Miro",
-      "number": "12365478",
+      "number": "44332222",
       "id": 11
+    },
+    {
+      "name": "Pekka Pouta",
+      "number": "5656566564",
+      "id": 14
+    },
+    {
+      "name": "Pekka Laine",
+      "number": "3322323",
+      "id": 16
+    },
+    {
+      "name": "Kaija Koo",
+      "number": "345654322",
+      "id": 17
+    },
+    {
+      "name": "Kaija",
+      "number": "455777777",
+      "id": 18
     }
   ]
 }
