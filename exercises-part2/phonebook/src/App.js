@@ -34,19 +34,21 @@ const App = () => {
       .then(persons => setPersons(persons))
   }
 
-// add person - create 
-  const addPerson = (event) => {
+// add person - create  and update person
+  const addPerson = event => {
     event.preventDefault()
     const isInArray = persons.filter(person => person.name === newName);
     console.log('isInArray', isInArray.length)
+    console.log("isInArray:::", isInArray)
+    
+    const personObject = {
+      name: newName,
+      number: newNumber
+    }
 
     if ( isInArray.length === 0 ) {
       
       console.log('button clicked', event.target)
-      const personObject = {
-        name: newName,
-        number: newNumber
-      }
       personService
         .create(personObject)
         .then(returnedPerson =>{
@@ -57,8 +59,19 @@ const App = () => {
           console.log('debug phonebooktmp', phonebookTmp)
         })
 
+    } else if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)){
+      const id = isInArray[0].id
+      console.log("id", id)
+      
+      personService
+        .update(id, personObject)
+        .then(response => {
+          setPersons(persons.map(person => person.id !== id ? person : response.data))
+        })
+      setNewName('')
+      setNewNumber('')
     } else {
-      window.alert(`${newName} is already added to phonebook`)
+
       setNewName('')
       setNewNumber('')
     }
@@ -139,12 +152,13 @@ const App = () => {
               onKeyUp={handleOnKeyUp}
       />
 
-      <h3>Add a new</h3>
+      <h3>Add a new or update existing one</h3>
       <PersonForm onSubmit={addPerson}
                   valueName={newName}
                   onChangeName={handleNameChange}
                   valueNumber={newNumber}
                   onChangeNumber={handleNumberChange}
+
 
       />
       <h3>Numbers</h3>
