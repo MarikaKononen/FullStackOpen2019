@@ -5,13 +5,12 @@ import Filter from './components/Filter'
 import Country from './components/Country'
 
 
-
 const App = () => {
   const [ countries, setCountries] = useState([]) 
   const [filteredCountries, setFilteredCountries] = useState([])
   const [ newFilter, setNewFilter ] = useState('')
 
-
+ 
   const hook = () => {
     console.log('effect')
     axios
@@ -49,29 +48,38 @@ const App = () => {
 
     }
   }
-
+ 
+  const showCountry = (event) => {
+    const countryName = event.target.value
+    console.log("in ShowCountry, country value is: ", countryName)
+    const singleCountry = countries.filter(c => c.name === countryName)
+    console.log("filtered singleCountry",singleCountry )
+    setFilteredCountries(singleCountry)
+  }
 
   const filterCountries = (array, letter) => {
     return array.filter(country => country.name.toLowerCase().startsWith(letter.toLowerCase()) === true )
   }
 
   return (
-    <div>
-      <h2>Find Countries</h2>
-      <Filter value={newFilter}
-              onChange={handleFilterChange}
-              
-      />
+   
+    <div>     
+        <h2>Find Countries</h2>
+        <Filter value={newFilter}
+                onChange={handleFilterChange}
+                
+        />
   
-      {filteredCountries.length < 11 &&          
-          <Countries allCountries = {filteredCountries} />
-      }
-      {filteredCountries.length > 10 &&
-          <p>Too many matches {filteredCountries.length}, specify another filter.</p>
-      }
-      
-      
+          {filteredCountries.length < 11 &&          
+              <Countries allCountries = {filteredCountries} showSingle={showCountry}/>
+          }
+
+          {filteredCountries.length > 10 &&
+              <p>Too many matches {filteredCountries.length}, specify another filter.</p>
+          }
+
     </div>
+
   )
 
 }

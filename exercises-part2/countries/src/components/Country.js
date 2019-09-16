@@ -1,6 +1,8 @@
 import React from 'react'
 
 const Country = (props) => {
+    console.log("in Country comp")
+    
     let stylesImg = {
         maxHeight: '100px'
     }
