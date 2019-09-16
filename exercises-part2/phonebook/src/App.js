@@ -181,7 +181,7 @@ const App = () => {
   return (
     <div>
       <Header />
-      <div className="container">
+      <div className='container'>
         <h2>Phonebook</h2>
 
         <Notification type={notificationType} message = {notificationMessage} />
